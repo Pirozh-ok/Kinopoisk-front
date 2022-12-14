@@ -5,18 +5,43 @@
     </div>
     <div class="form_auth_block_content">
       <p class="form_auth_block_head_text">Authorization</p>
-      <form class="form_auth_style">
+      <form class="form_auth_style"  @submit="checkForm">
         <input
-            type="email"
+            type="text"
             v-model.trim="form.email"
             name="auth_email"
             placeholder="Enter your email:">
+        <p class="error-message" v-if = "this.v$.form.email.required.$invalid">
+          Fields Email is required
+        </p>
+        <p class="error-message" v-if = "this.v$.form.email.email.$invalid">
+          String not email
+        </p>
+        <p class="error-message" v-if = "this.form.email.length < this.minEmailLen">
+          Less then {{minEmailLen}}
+        </p>
+        <p class="error-message" v-if = "this.form.email.length > this.maxEmailLen">
+          More then {{maxEmailLen}}
+        </p>
         <input
             type="password"
             v-model.trim="form.password"
             name="auth_pass"
             placeholder="Enter password:">
-        <button @click="getUser" class="form_auth_button" type="submit" name="form_auth_submit">Sign in</button>
+        <p class="error-message" v-if = "this.v$.form.password.required.$invalid">
+          Fields Email is required
+        </p>
+        <p class="error-message" v-if = "this.form.password.length < this.minEmailLen">
+          Less then {{minPasswordLen}}
+        </p>
+        <p class="error-message" v-if = "this.form.password.length > this.maxEmailLen">
+          More then {{maxPasswordLen}}
+        </p>
+        <button
+            class="form_auth_button"
+            type="submit"
+            name="form_auth_submit">
+          Sign in</button>
       </form>
     </div>
   </div>
@@ -76,16 +101,22 @@ input:focus {
   border-radius: 10px;
   border: 2px solid #436fea;
 }
-.form_auth_button{
-  color : white;
+.form_auth_button {
+  color: white;
   background: #242424;
   display: block;
   width: 20%;
-  margin: 10% auto;
+  margin: 5% auto;
   border-radius: 10px;
   height: 35px;
   border-color: black;
   cursor: pointer;
+}
+.error-message{
+  margin-left: 15%;
+  color: red;
+  text-align: center;
+  font-size: 10px
 }
 ::-webkit-input-placeholder {color:#3f3f44; padding-left: 10px;}
 :-moz-placeholder{color:#3f3f44; padding-left: 10px;}
@@ -95,26 +126,74 @@ input:focus {
 
 <script>
 import axios from "axios";
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
 export default {
   name: "LoginComponent",
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data() {
-      return {
-        form: {
-          email: '',
-          password: ''
+    return {
+      form: {
+        email: '',
+        password: ''
+      },
+      maxEmailLen: 30,
+      minEmailLen: 6,
+      minPasswordLen: 6,
+      maxPasswordLen: 30,
+      authResponse: null
+    }
+  },
+  validations: {
+      form: {
+        email: {
+          required,
+          email,
         },
-        response: null
+        password: {
+          required,
+        }
       }
   },
+
   methods: {
-    getUser(){
-      axios
-          .get(`https://localhost:7143/api/Account/login?Email=${this.email}&Password=${this.password}`)
-          .then(response => (this.response = response));
-      console.log(this.response)
-    }
-  }
+    async getUser() {
+      const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
+      //const resp = axios.get(url).then(response => response.data);
+
+      /*const res = await fetch('https://localhost:7143/api/Account/login', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'includes',
+        body: JSON.stringify({
+          email: this.form.email,
+          password: this.form.password
+        })
+      });*/
+
+      // axios
+      //     .get(url)
+      //     .then(response => {
+      //       console.log((response.data));
+      //     });
+      // console.log(this.response)
+    },
+    async checkForm(){
+      console.log("1")
+      //const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
+      const url = 'https://localhost:7143/api/Account/login?Email=ivan.vorotnikov.2002@mail.ru&Password=password'
+      console.log("2")
+      const resp = (await axios.get(url)).data;
+      console.log(resp)
+      alert(resp);
+      alert("WHERE");
+      }
+    },
 }
 </script>
 
