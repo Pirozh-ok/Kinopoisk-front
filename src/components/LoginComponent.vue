@@ -1,41 +1,50 @@
 <template>
   <div class="form_auth_block">
     <div class="form_auth_block_image">
-      <img src="../images/cam.png" width="250">
+<!--      <img src="../assets/images/cam.png" >-->
     </div>
     <div class="form_auth_block_content">
       <p class="form_auth_block_head_text">Authorization</p>
       <form class="form_auth_style" @submit.prevent="checkForm">
         <input
             type="text"
-            v-model.trim="form.email"
             name="auth_email"
-            placeholder="Enter your email:">
-        <p class="error-message" v-if = "this.v$.form.email.required.$invalid">
-          Fields Email is required
+            placeholder="Enter your email:"
+            v-model.trim="form.email"
+            :class="{invalid: (v$.form.email.$dirty && !v$.form.email.required)
+            || (v$.form.email.$dirty && !v$.form.email.email)
+            || (v$.form.email.$dirty && !v$.form.email.minLength)
+            || (v$.form.email.$dirty && !v$.form.email.maxLength)}"
+        >
+       <p class="error-message" v-if = "v$.form.email.$dirty && v$.form.email.required.$invalid">
+         The email field is required
         </p>
-        <p class="error-message" v-if = "this.v$.form.email.email.$invalid">
-          String not email
+        <p class="error-message" v-else-if = "v$.form.email.$dirty && v$.form.email.email.$invalid">
+          Invalid email
         </p>
-        <p class="error-message" v-if = "this.form.email.length < this.minEmailLen">
-          Less then {{minEmailLen}}
+        <p class="error-message" v-else-if = "v$.form.email.$dirty && v$.form.email.minLength.$invalid">
+          The email length must be more than {{v$.form.email.minLength.$params.min}} characters
         </p>
-        <p class="error-message" v-if = "this.form.email.length > this.maxEmailLen">
-          More then {{maxEmailLen}}
+        <p class="error-message" v-else-if = "v$.form.email.$dirty && v$.form.email.maxLength.$invalid">
+          The email length must be less than {{v$.form.email.maxLength.$params.max}} characters
         </p>
         <input
             type="password"
             v-model.trim="form.password"
             name="auth_pass"
-            placeholder="Enter password:">
-        <p class="error-message" v-if = "this.v$.form.password.required.$invalid">
-          Fields Email is required
+            placeholder="Enter password:"
+            :class="{invalid: (v$.form.password.$dirty && !v$.form.password.required)
+            || (v$.form.password.$dirty && !v$.form.password.minLength)
+            || (v$.form.password.$dirty && !v$.form.password.maxLength)}"
+        >
+        <p class="error-message" v-if = "v$.form.password.$dirty && v$.form.password.required.$invalid">
+          The password field is required
         </p>
-        <p class="error-message" v-if = "this.form.password.length < this.minEmailLen">
-          Less then {{minPasswordLen}}
+        <p class="error-message" v-else-if = "v$.form.password.$dirty && v$.form.password.minLength.$invalid">
+          The password length must be more than {{v$.form.password.minLength.$params.min}} characters
         </p>
-        <p class="error-message" v-if = "this.form.password.length > this.maxEmailLen">
-          More then {{maxPasswordLen}}
+        <p class="error-message" v-else-if = "v$.form.password.$dirty && v$.form.password.maxLength.$invalid">
+          The password length must be less than {{v$.form.password.maxLength.$params.max}} characters
         </p>
         <button
             class="form_auth_button"
@@ -49,33 +58,31 @@
 
 <style scoped>
 .form_auth_block{
+  display: flex;
   width: 700px;
   height: 400px;
-  margin: 0 auto;
-  background-size: cover;
-  border-radius: 4px;
   background: white;
-  zoom: 150%
+  zoom: 140%;
 }
 .form_auth_block_content{
-  display: inline-block;
-  padding-top: 7%;
-  width: 60%;
+  display: block;
+  width: 70%;
 }
 
 .form_auth_block_image{
-  display: inline-block;
-  position:relative
+  background-image: url(../assets/images/cam.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center ;
+  width: 30%;
 }
 
 .form_auth_block_head_text{
   color: black;
-  display: block;
   text-align: center;
-  padding: 10px;
+  padding-bottom: 3%;
   font-size: 50px;
   font-weight: 600;
-  opacity: 0.7;
 }
 .form_auth_block label{
   display: block;
@@ -88,12 +95,10 @@
   margin-top: 10px;
 }
 .form_auth_block input{
-  display: block;
-  margin: 20px auto;
   width: 80%;
   height: 45px;
+  margin: 20px;
   border-radius: 10px;
-  outline: none;
   border-color: black;
 }
 input:focus {
@@ -118,6 +123,10 @@ input:focus {
   text-align: center;
   font-size: 10px
 }
+
+.invalid{
+  color: red;
+}
 ::-webkit-input-placeholder {color:#3f3f44; padding-left: 10px;}
 :-moz-placeholder{color:#3f3f44; padding-left: 10px;}
 :-moz-placeholder{color:#3f3f44; padding-left: 10px;}
@@ -127,7 +136,7 @@ input:focus {
 <script>
 import axios from "axios";
 import { useVuelidate } from '@vuelidate/core'
-import { required, email } from '@vuelidate/validators'
+import { required, email, minLength, maxLength } from '@vuelidate/validators'
 
 export default {
   name: "LoginComponent",
@@ -140,10 +149,6 @@ export default {
         email: '',
         password: ''
       },
-      maxEmailLen: 30,
-      minEmailLen: 6,
-      minPasswordLen: 6,
-      maxPasswordLen: 30,
       authResponse: null
     }
   },
@@ -152,9 +157,13 @@ export default {
       email: {
         required,
         email,
+        minLength: minLength(6),
+        maxLength: maxLength(30)
       },
       password: {
         required,
+        minLength: minLength(6),
+        maxLength: maxLength(30)
       }
     }
   },
@@ -167,8 +176,12 @@ export default {
     },
 
     async checkForm() {
-      if (this.form.lo) {
+      if(this.v$.$invalid){
+        this.v$.$touch();
+        return;
       }
+      alert("login");
+      //await this.SignUp()
     }
   },
 }
