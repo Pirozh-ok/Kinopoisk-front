@@ -5,7 +5,7 @@
     </div>
     <div class="form_auth_block_content">
       <p class="form_auth_block_head_text">Authorization</p>
-      <form class="form_auth_style"  @submit="checkForm">
+      <form class="form_auth_style" @submit.prevent="checkForm">
         <input
             type="text"
             v-model.trim="form.email"
@@ -69,13 +69,13 @@
 }
 
 .form_auth_block_head_text{
+  color: black;
   display: block;
   text-align: center;
   padding: 10px;
   font-size: 50px;
   font-weight: 600;
   opacity: 0.7;
-  color: black;
 }
 .form_auth_block label{
   display: block;
@@ -131,8 +131,8 @@ import { required, email } from '@vuelidate/validators'
 
 export default {
   name: "LoginComponent",
-  setup () {
-    return { v$: useVuelidate() }
+  setup() {
+    return {v$: useVuelidate()}
   },
   data() {
     return {
@@ -148,52 +148,29 @@ export default {
     }
   },
   validations: {
-      form: {
-        email: {
-          required,
-          email,
-        },
-        password: {
-          required,
-        }
+    form: {
+      email: {
+        required,
+        email,
+      },
+      password: {
+        required,
       }
+    }
   },
 
   methods: {
-    async getUser() {
+    async SignUp() {
       const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
-      //const resp = axios.get(url).then(response => response.data);
-
-      /*const res = await fetch('https://localhost:7143/api/Account/login', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'includes',
-        body: JSON.stringify({
-          email: this.form.email,
-          password: this.form.password
-        })
-      });*/
-
-      // axios
-      //     .get(url)
-      //     .then(response => {
-      //       console.log((response.data));
-      //     });
-      // console.log(this.response)
+      const {data} = await axios.get(url);
+      console.log(data)
     },
-    async checkForm(){
-      console.log("1")
-      //const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
-      const url = 'https://localhost:7143/api/Account/login?Email=ivan.vorotnikov.2002@mail.ru&Password=password'
-      console.log("2")
-      const resp = (await axios.get(url)).data;
-      console.log(resp)
-      alert(resp);
-      alert("WHERE");
+
+    async checkForm() {
+      if (this.form.lo) {
       }
-    },
+    }
+  },
 }
 </script>
 
