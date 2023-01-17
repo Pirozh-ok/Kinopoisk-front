@@ -169,20 +169,35 @@ export default {
   },
 
   methods: {
-    async SignUp() {
-      const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
-      const {data} = await axios.get(url);
-      console.log(data)
-    },
-
     async checkForm() {
-      if(this.v$.$invalid){
+      if (this.v$.$invalid) {
         this.v$.$touch();
         return;
       }
-      alert("login");
-      //await this.SignUp()
-    }
+      await this.SignUp()
+    },
+
+    async SignUp() {
+      const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
+      try {
+        const {data} = await axios.get(url);
+        window.localStorage.setItem("accessToken", data.value.accessToken);
+        window.localStorage.setItem("refreshToken", data.value.refreshToken);
+        alert("login");
+        //redirect to main page
+      }
+      catch(error){
+        console.log(error);
+
+        if (error.response.status == 400) {
+          const errors = error.response.data.errors;
+
+          for(const error of errors){
+            alert(error);
+          }
+        }
+      }
+    },
   },
 }
 </script>
