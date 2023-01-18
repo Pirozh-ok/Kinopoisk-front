@@ -137,6 +137,7 @@ input:focus {
 import axios from "axios";
 import { useVuelidate } from '@vuelidate/core'
 import { required, email, minLength, maxLength } from '@vuelidate/validators'
+import jwt_decode from "jwt-decode";
 
 export default {
   name: "LoginComponent",
@@ -174,19 +175,22 @@ export default {
         this.v$.$touch();
         return;
       }
-      await this.SignUp()
+      await this.signUp()
     },
 
-    async SignUp() {
+    async signUp() {
       const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
       try {
         const {data} = await axios.get(url);
-        window.localStorage.setItem("accessToken", data.value.accessToken);
-        window.localStorage.setItem("refreshToken", data.value.refreshToken);
-        alert("login");
-        //redirect to main page
+        const decodedToken = jwt_decode(data.value.accessToken);
+        localStorage.setItem("tokenExpireData", decodedToken.exp);
+        localStorage.setItem("userId", decodedToken.jti);
+        localStorage.setItem("accessToken", data.value.accessToken);
+        localStorage.setItem("refreshToken", data.value.refreshToken);
+        await this.$router.push('/main');
       }
       catch(error){
+        alert("error");
         console.log(error);
 
         if (error.response.status == 400) {
