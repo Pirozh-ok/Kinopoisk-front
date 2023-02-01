@@ -3,11 +3,22 @@
     padding: 0;
 }
 
+html{
+    height: 100%;
+}
+
 body{
-    width: 100%;
-    min-height: 100vh;
-    background: #242424;
+    min-width: 100%;
+    min-height: 100%;
+    background: darkslategray;
     display: flex;
     justify-content: center;
+    align-items: center;
+}
+
+#app{
+    width: 100vh;
+    height: 100vh;
+    display: flex;
     align-items: center;
 }

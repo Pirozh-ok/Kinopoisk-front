@@ -1,8 +1,6 @@
 <template>
   <div class="form_auth_block">
-    <div class="form_auth_block_image">
-<!--      <img src="../assets/images/cam.png" >-->
-    </div>
+    <div class="form_auth_block_image"></div>
     <div class="form_auth_block_content">
       <p class="form_auth_block_head_text">Authorization</p>
       <form class="form_auth_style" @submit.prevent="checkForm">
@@ -61,7 +59,7 @@
   display: flex;
   width: 700px;
   height: 400px;
-  background: white;
+  background: grey;
   zoom: 140%;
 }
 .form_auth_block_content{
@@ -75,6 +73,7 @@
   background-repeat: no-repeat;
   background-position: center ;
   width: 30%;
+  margin-left:2%;
 }
 
 .form_auth_block_head_text{
@@ -190,14 +189,13 @@ export default {
         await this.$router.push('/main');
       }
       catch(error){
-        alert("error");
         console.log(error);
 
         if (error.response.status == 400) {
           const errors = error.response.data.errors;
 
-          for(const error of errors){
-            alert(error);
+          if(errors != null){
+            alert(errors.at(0))
           }
         }
       }
