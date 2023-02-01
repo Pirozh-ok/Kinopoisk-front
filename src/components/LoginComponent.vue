@@ -57,10 +57,9 @@
 <style scoped>
 .form_auth_block{
   display: flex;
-  width: 700px;
-  height: 400px;
-  background: grey;
-  zoom: 140%;
+  width: 100%;
+  height: 100%;
+  background: white;
 }
 .form_auth_block_content{
   display: block;
@@ -83,6 +82,7 @@
   font-size: 50px;
   font-weight: 600;
 }
+
 .form_auth_block label{
   display: block;
   text-align: center;
@@ -93,6 +93,7 @@
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
 .form_auth_block input{
   width: 80%;
   height: 45px;
@@ -100,11 +101,13 @@
   border-radius: 10px;
   border-color: black;
 }
+
 input:focus {
   color: #000000;
   border-radius: 10px;
   border: 2px solid #436fea;
 }
+
 .form_auth_button {
   color: white;
   background: #242424;
@@ -116,6 +119,7 @@ input:focus {
   border-color: black;
   cursor: pointer;
 }
+
 .error-message{
   margin-left: 15%;
   color: red;
