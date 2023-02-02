@@ -48,17 +48,36 @@
             class="form_auth_button"
             type="submit"
             name="form_auth_submit">
-          Sign in</button>
+          Log In</button>
+        <div class="form_auth_buttons_additional_buttons">
+          <button
+              class="form_auth_additional_button"
+              type="submit"
+              @click="registration"
+              name="form_auth_submit">
+            Don't have an account yet?</button>
+
+          <button
+              class="form_auth_additional_button"
+              type="submit"
+              @click="recoveryPassword"
+              name="form_auth_submit">
+            Forgot your password?</button>
+        </div>
       </form>
     </div>
   </div>
 </template>
 
 <style scoped>
+*{
+  box-sizing: border-box;
+}
+
 .form_auth_block{
   display: flex;
   width: 100%;
-  height: 100%;
+  height: 70%;
   background: white;
 }
 .form_auth_block_content{
@@ -70,7 +89,7 @@
   background-image: url(../assets/images/cam.png);
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center ;
+  background-position: center;
   width: 30%;
   margin-left:2%;
 }
@@ -78,28 +97,28 @@
 .form_auth_block_head_text{
   color: black;
   text-align: center;
+  padding-top: 5%;
   padding-bottom: 3%;
-  font-size: 50px;
+  font-size: 80px;
   font-weight: 600;
+  height: 20%;
 }
 
-.form_auth_block label{
-  display: block;
-  text-align: center;
-  padding: 10px;
-  background: #ffffff;
-  opacity: 0.7;
-  font-weight: 600;
-  margin-bottom: 10px;
-  margin-top: 10px;
+.form_auth_style{
+  text-aighn: center;
+  margin-top: 5%;
 }
 
 .form_auth_block input{
-  width: 80%;
+  width: 70%;
   height: 45px;
-  margin: 20px;
   border-radius: 10px;
   border-color: black;
+  display: block;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
 }
 
 input:focus {
@@ -110,7 +129,7 @@ input:focus {
 
 .form_auth_button {
   color: white;
-  background: #242424;
+  background: darkslategray;
   display: block;
   width: 20%;
   margin: 5% auto;
@@ -118,22 +137,36 @@ input:focus {
   height: 35px;
   border-color: black;
   cursor: pointer;
+  font-size: 20px;
+}
+
+.form_auth_buttons_additional_buttons{
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.form_auth_additional_button {
+  width: 50%;
+  border: none;
+  text-decoration: underline;
+  font-size: 15px;
 }
 
 .error-message{
   margin-left: 15%;
   color: red;
   text-align: center;
-  font-size: 10px
+  font-size: 20px
 }
 
 .invalid{
   color: red;
 }
-::-webkit-input-placeholder {color:#3f3f44; padding-left: 10px;}
-:-moz-placeholder{color:#3f3f44; padding-left: 10px;}
-:-moz-placeholder{color:#3f3f44; padding-left: 10px;}
-:-ms-input-placeholder      {color:#3f3f44; padding-left: 10px;}
+::-webkit-input-placeholder {color:#3f3f44; padding-left: 20px;}
+:-moz-placeholder{color:#3f3f44; padding-left: 20px;}
+:-moz-placeholder{color:#3f3f44; padding-left: 20px;}
+:-ms-input-placeholder      {color:#3f3f44; padding-left: 20px;}
 </style>
 
 <script>
@@ -178,10 +211,10 @@ export default {
         this.v$.$touch();
         return;
       }
-      await this.signUp()
+      await this.logIn()
     },
 
-    async signUp() {
+    async logIn() {
       const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
       try {
         const {data} = await axios.get(url);
@@ -204,6 +237,14 @@ export default {
         }
       }
     },
+
+    async registration(){
+      alert("go to registration")
+    },
+
+    async recoveryPassword(){
+      await this.$router.push('/recovery-password');
+    }
   },
 }
 </script>
