@@ -1,6 +1,6 @@
 <template>
   <div v-if="userData != null">
-    <p>{{ userData.userName }}</p>
+    <p class="test">{{ userData.userName }}</p>
     <p>{{ userData.lastName }}</p>
     <p>{{ userData.firstName }}</p>
     <p>{{ userData.patronymic }}</p>
@@ -80,6 +80,6 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+@import '../assets/css/style.css';
 </style>
