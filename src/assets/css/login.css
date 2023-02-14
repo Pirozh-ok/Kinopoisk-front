@@ -2,46 +2,67 @@
     box-sizing: border-box;
 }
 
+.container{
+    margin: auto;
+    max-width: 1280px;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    background: none;
+}
+
+html{
+    width: 100%;
+    height: 100%;
+}
+
 body {
     margin: 0;
     padding: 0;
     background: url("../images/background_auth.jpeg");
-    /*background-size: cover;*/
+    width: 100%;
+    height: 100%;
 }
 
 .form_auth_block{
-    display: flex;
-    width: 100%;
-    height: 70%;
-    background: white;
-}
-.form_auth_block_content{
     display: block;
-    width: 70%;
+    width: 35%;
+    height: 55%;
+    background: white;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    border-radius: 30px;
 }
 
-.form_auth_block_image{
-    background-image: url("../images/cam.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 30%;
-    margin-left:2%;
-}
+/*.form_auth_block_image{*/
+/*    background-image: url("../images/cam.png");*/
+/*    background-size: contain;*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: center;*/
+/*    width: 30%;*/
+/*    margin-left:2%;*/
+/*}*/
 
 .form_auth_block_head_text{
     color: black;
     text-align: center;
-    padding-top: 5%;
-    padding-bottom: 3%;
-    font-size: 80px;
+    font-size: 400%;
     font-weight: 600;
     height: 20%;
+    margin-top: 2%;
 }
 
-.form_auth_style{
+.form_auth_login-buttons{
+    display: flex;
+    margin: 10% auto;
+    width: 80%;
+}
+
+.form_auth_user-elements{
     text-aighn: center;
-    margin-top: 5%;
+    height: 80%;
 }
 
 .form_auth_block input{
@@ -66,13 +87,27 @@ input:focus {
     color: white;
     background: darkslategray;
     display: block;
-    width: 20%;
-    margin: 5% auto;
+    width: 30%;
     border-radius: 10px;
     height: 35px;
     border-color: black;
     cursor: pointer;
     font-size: 20px;
+    margin: 0 auto;
+}
+
+.form_auth_button_google{
+    /*color: white;*/
+    /*background: #005b96;*/
+    /*display: block;*/
+    /*width: 40%;*/
+    /*border-radius: 10px;*/
+    /*height: 35px;*/
+    /*border-color: black;*/
+    /*cursor: pointer;*/
+    /*font-size: 20px;*/
+    width: 50%;
+    margin: 0 auto;
 }
 
 .form_auth_buttons_additional_buttons{

@@ -1,15 +1,17 @@
 <template>
-  <div v-if="userData != null">
-    <p class="test">{{ userData.userName }}</p>
-    <p>{{ userData.lastName }}</p>
-    <p>{{ userData.firstName }}</p>
-    <p>{{ userData.patronymic }}</p>
-    <p>{{ userData.email }}</p>
-    <p>{{ userData.dateOfBirth }}</p>
-    <p>{{ userData.dateOfRegistration }}</p>
-    <button @click="LogOut">
-      Log out
-    </button>
+  <div class="container">
+    <div class="header">
+      <div class="header-text">
+        <p>KinoPoisk</p>
+      </div>
+      <div class = "header-userdata" v-if="userData != null">
+        <p>{{userData.userName}}</p>
+        <p>{{userData.email}}</p>
+      </div>
+    </div>
+    <div class="content">
+
+    </div>
   </div>
 </template>
 
@@ -74,12 +76,12 @@ export default {
     if (await this.isAuthorize()) {
       console.log(this.userData);
     } else {
-      //await router.push('/login')
+      await this.$router.push('/login')
     }
   }
 }
 </script>
 
 <style>
-@import '../assets/css/style.css';
+@import '../assets/css/mainpage.css';
 </style>

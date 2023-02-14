@@ -1,0 +1,34 @@
+.container{
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: inline-block;
+    background: white;
+}
+
+.header{
+    background: #000000;
+    height: 10%;
+    width: 100%;
+    display: inline-block;
+}
+
+.header-text{
+    margin-left: 5%;
+    padding-top: 1%;
+    width: 20%;
+    color: #ffffff;
+    font-size: 400%;
+}
+
+.header-userdata{
+    width: 30%;
+    color: #000000;
+}
+
+.content{
+    background: white;
+    height: 90%;
+    width: 100%;
+}

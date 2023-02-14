@@ -3,12 +3,18 @@
 </template>
 
 <style scoped>
+body{
+  background: url("./assets/images/background_auth.jpeg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
 .router{
-  width: 60%;
-  height: 60%;
-  margin-left: 20%;
-  margin-top: 10%;
-  position: absolute;
+  /*width: 60%;*/
+  /*height: 60%;*/
+  /*margin-left: 20%;*/
+  /*margin-top: 10%;*/
+  /*position: absolute;*/
 }
 </style>
 

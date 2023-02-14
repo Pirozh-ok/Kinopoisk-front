@@ -4,14 +4,15 @@
     padding: 0;
 }
 
-.body{
-    background-color: blue;
-    background: url("./src/assets/images/background_auth.jpeg");
+body{
+    background: url("../images/background_auth.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 #app{
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
 html {
