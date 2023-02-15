@@ -1,28 +1,44 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="movies != null">
     <div class="header">
       <div class="header-text">
         <p>KinoPoisk</p>
       </div>
       <div class = "header-userdata" v-if="userData != null">
-        <p>{{userData.userName}}</p>
-        <p>{{userData.email}}</p>
+        <div class="header-userdata-text">
+          <p>{{userData.userName}}</p>
+          <p>{{userData.email}}</p>
+        </div>
+        <button class="header-userdata-btn">
+
+        </button>
       </div>
     </div>
-    <div class="content">
-
+    <div class="content" v-if="movies != null">
+      <ul class="dashboard-movies">
+        <li v-for="movie in movies" :key="movie.id" class="movie">
+          <ViewMovieComponent
+              :id="movie.id"
+              :movieTitle="movie.title"
+              :imagePath="movie.imagePath">
+          </ViewMovieComponent>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import ViewMovieComponent from "@/components/ViewMovieComponent.vue";
 
 export default {
   name: "MainWindow.vue",
+  components: {ViewMovieComponent},
   data() {
     return {
-      userData: null
+      userData: null,
+      movies: null
     }
   },
   methods: {
@@ -72,9 +88,22 @@ export default {
       await this.$router.push('/login');
     }
   },
+
   async mounted() {
     if (await this.isAuthorize()) {
       console.log(this.userData);
+
+      //gets list movies
+      const url = `https://localhost:7143/api/movie/dashboard`;
+      try{
+        const {data} = await axios.get(url);
+        console.log("load films")
+        console.log(data);
+        this.movies = data.value;
+      }
+      catch (error){
+        console.log(error)
+      }
     } else {
       await this.$router.push('/login')
     }
