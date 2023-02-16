@@ -15,12 +15,16 @@
       </div>
     </div>
     <div class="content" v-if="movies != null">
+<!--      <video autoplay loop muted class="bgvideo">-->
+<!--        <source src="../assets/images/background-video.mp4" type="video/mp4">-->
+<!--      </video>-->
       <ul class="dashboard-movies">
         <li v-for="movie in movies" :key="movie.id" class="movie">
           <ViewMovieComponent
               :id="movie.id"
               :movieTitle="movie.title"
-              :imagePath="movie.imagePath">
+              :imagePath="movie.imagePath"
+              :movieUrl="movieUrl">
           </ViewMovieComponent>
         </li>
       </ul>
@@ -31,14 +35,16 @@
 <script>
 import axios from "axios";
 import ViewMovieComponent from "@/components/ViewMovieComponent.vue";
+import VideoBg from 'vue-videobg'
 
 export default {
   name: "MainWindow.vue",
-  components: {ViewMovieComponent},
+  components: {ViewMovieComponent, VideoBg},
   data() {
     return {
       userData: null,
-      movies: null
+      movies: null,
+      movieUrl: "/test"
     }
   },
   methods: {

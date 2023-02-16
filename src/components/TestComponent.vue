@@ -1,5 +1,5 @@
 <template>
-<p>ddsklkdf</p>
+  <p class="container">TEST TEST</p>
 </template>
 
 <script>
@@ -9,5 +9,11 @@ export default {
 </script>
 
 <style scoped>
+  body{
+    background: white;
+  }
 
+  .container{
+    color: white;
+  }
 </style>
