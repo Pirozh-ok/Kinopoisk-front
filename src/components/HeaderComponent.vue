@@ -58,7 +58,7 @@ export default {
 }
 
 .header-userdata {
-  width: 25%;
+  width: 20%;
   height: 70%;
   display: flex;
   justify-content: space-between;
