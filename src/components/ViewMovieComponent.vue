@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <router-link :to="movieUrl">
+    <router-link :to="aboutMovieUrl">
       <img :src="imagePath" class="image" width="100%" height="100%">
       </router-link>
   </div>
@@ -14,11 +14,12 @@ export default {
     movieId: String,
     movieTitle: String,
     imagePath: String,
-    movieUrl: String
   },
 
-  methods: {
-
+  data(){
+    return {
+      aboutMovieUrl: `/movie/${this.movieId}`
+    }
   },
 }
 </script>
@@ -26,6 +27,10 @@ export default {
 <style scoped>
 .container{
   background: none;
+}
+
+p{
+  color: white;
 }
 
 .image{

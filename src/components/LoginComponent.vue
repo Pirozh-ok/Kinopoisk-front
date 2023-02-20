@@ -2,7 +2,7 @@
   <div class="container">
     <div class="form_auth_block">
         <p class="form_auth_block_head_text">Authorization</p>
-        <form class="form_auth_user-elements">
+        <form class="form_auth_user-elements" @submit="hi">
           <input
               type="text"
               name="auth_email"
@@ -46,7 +46,7 @@
           <div class="form_auth_login-buttons">
             <button
                 class="form_auth_button"
-                type="submit"
+                type="button"
                 name="form_auth_submit"
                 @click="handleClickLogIn">
               Log In
@@ -60,7 +60,7 @@
           <div class="form_auth_buttons_additional_buttons">
             <button
                 class="form_auth_additional_button"
-                type="submit"
+                type="button"
                 @click="handleClickRegistration"
                 name="form_auth_submit">
               Don't have an account yet?
@@ -68,7 +68,7 @@
 
             <button
                 class="form_auth_additional_button"
-                type="submit"
+                type="button"
                 @click="handleClickRecoveryPassword"
                 name="form_auth_submit">
               Forgot your password?
@@ -89,6 +89,7 @@ import {useVuelidate} from '@vuelidate/core'
 import {required, email, minLength, maxLength} from '@vuelidate/validators'
 import jwt_decode from "jwt-decode";
 import {GoogleSignInButton} from "vue3-google-signin";
+import {isAuthorize} from "@/auth.js";
 
 export default {
   name: "LoginComponent",
@@ -120,7 +121,12 @@ export default {
   },
 
   methods: {
+    async hi(){
+      alert("hi")
+    },
+
     async handleClickLogIn() {
+      console.log(this.v$.$invalid);
       if (this.v$.$invalid) {
         this.v$.$touch();
         return;
@@ -132,9 +138,10 @@ export default {
       const url = `https://localhost:7143/api/Account/login?Email=${this.form.email}&Password=${this.form.password}`;
       try {
         const {data} = await axios.get(url);
-        this.setAuthDataToLocalStorage(data.value.accessToken, data.value.refreshToken);
-        await this.$router.push('/main');
-      } catch (error) {
+        this.setAuthDataToLocalStorage(data.value);
+        await this.$router.push({name: "main-page"});
+      }
+      catch (error) {
         console.log(error);
 
         if (error.response.status == 400) {
@@ -147,12 +154,14 @@ export default {
       }
     },
 
-    setAuthDataToLocalStorage(accessToken, refreshToken) {
-      const decodedToken = jwt_decode(accessToken);
+    setAuthDataToLocalStorage(data) {
+      const decodedToken = jwt_decode(data.accessToken);
       localStorage.setItem("tokenExpireData", decodedToken.exp);
       localStorage.setItem("userId", decodedToken.jti);
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem("userName", data.data.userName);
+      localStorage.setItem("email", data.data.email);
     },
 
     async handleClickRegistration() {
@@ -160,7 +169,7 @@ export default {
     },
 
     async handleClickRecoveryPassword() {
-      await this.$router.push('/recovery-password');
+      await this.$router.push({name: 'recovery-password-page'});
     },
 
     // handle success event
@@ -191,25 +200,11 @@ export default {
     handleLoginError() {
       console.error("Login failed");
     },
-
-    async isAuthorize() {
-      if (localStorage.getItem("accessToken") === null) {
-        return false;
-      }
-
-      if (new Date(Date.now()) > new Date(localStorage.getItem("tokenExpireData") * 1000)) {
-        return false;
-      }
-
-      return true;
-    }
   },
 
   async mounted() {
-    const a = await this.isAuthorize();
-    console.log(a);
-    if (a) {
-      await this.$router.push('/main')
+    if (await isAuthorize()) {
+      await this.$router.push({name: "main-page"})
     }
   },
 }
