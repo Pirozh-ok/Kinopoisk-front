@@ -78,10 +78,9 @@ export default {
 }
 
 .header-userdata-btn-color{
-  width: 100%;
   height: 100%;
-  background: white;
-  background-image: url("../assets/images/user-profile.png");
+  background-color: white;
+  /*background-image: url("../assets/images/user-profile.png");*/
   background-size: cover;
   border-radius: 30px;
   cursor: pointer;
