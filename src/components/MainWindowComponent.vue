@@ -20,7 +20,6 @@ import axios from "axios";
 import ViewMovieComponent from "@/components/ViewMovieComponent.vue";
 import Header from "@/components/HeaderComponent.vue";
 import {isAuthorize} from "@/auth.js";
-import {useQuery} from "vue-query";
 
 export default {
   name: "MainWindow.vue",
@@ -45,6 +44,7 @@ export default {
       try{
         const {data} = await axios.get(url);
         this.movies = data.value;
+        console.log(this.movies)
       }
       catch (error){
         console.log(error)
