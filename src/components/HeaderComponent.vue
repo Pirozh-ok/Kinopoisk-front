@@ -50,18 +50,19 @@ export default {
 
 .header-text {
   padding-top: 1%;
-  width: 20%;
+  width: 30%;
   color: #dacfcf;
-  font-size: 400%;
+  font-size: 5vw;
   display: block;
   font-family: 'Roboto', sans-serif;
+  margin: auto 0;
 }
 
 .header-userdata {
-  width: 20%;
-  height: 70%;
+  width: 25%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: auto 0;
 }
 
@@ -69,20 +70,20 @@ export default {
   margin: auto 0;
   width: 70%;
   display: block;
+  font-size: 1vw;
 }
 
 .header-userdata-btn {
   width: 20%;
-  height: 100%;
   margin: auto 0;
 }
 
 .header-userdata-btn-color{
-  height: 100%;
-  background-color: white;
-  /*background-image: url("../assets/images/user-profile.png");*/
+  height: 4vw;
+  width: 4vw;
+  background-image: url("../assets/images/user-profile.png");
   background-size: cover;
-  border-radius: 30px;
+  border-radius: 4vh;
   cursor: pointer;
 }
 </style>

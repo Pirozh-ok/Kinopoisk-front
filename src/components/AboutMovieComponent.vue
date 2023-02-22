@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="player-movie">
-      <video class="video" controls>
+      <video preload="metadata" class="video" controls>
         <source src="../assets/images/avengers.mp4" type="video/mp4">
       </video>
     </div>
@@ -91,7 +91,7 @@ body {
   padding-top: 2%;
   height: 100%;
   width: 90%;
-  display: block;
+  display: table;
   margin: 0 auto;
   color: #dacfcf;
   padding-bottom: 1%;
@@ -100,9 +100,10 @@ body {
 .content {
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 60%;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2%;
 }
 
 .movie-poster {
@@ -129,7 +130,7 @@ body {
   height: 15%;
   width: 90%;
   color: white;
-  margin: 0 auto;
+  margin: 1% auto;
   font-size: 7vh
 }
 
@@ -166,12 +167,14 @@ body {
 }
 
 .player-movie{
-  width: 100%;
-  height: 70%;
+  width: 80%;
+  height: 40%;
+  margin: 0 auto;
 }
 
 .video{
-  height: 100%;
-  width: 100%
+  height: auto;
+  width: 100%;
+  max-width: 100%;
 }
 </style>
