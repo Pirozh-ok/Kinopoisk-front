@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Header/>
+    <Header class="header"/>
     <div class="content" v-if="movieData != null">
       <div class="movie-poster">
         <img :src="posterPath" class="image" width="100%" height="100%">
@@ -38,9 +38,12 @@
         </div>
       </div>
     </div>
-    <div class="player-movie">
+    <div class="not-movie" v-if="moviePath === null">
+      <p>This movie can't be viewed on KinoPoisk yet</p>
+    </div>
+    <div class="player-movie" v-else-if="moviePath != null">
       <video preload="metadata" class="video" controls>
-        <source src="../assets/images/avengers.mp4" type="video/mp4">
+        <source :src=moviePath type="video/mp4">
       </video>
     </div>
   </div>
@@ -57,7 +60,8 @@ export default {
   data() {
     return {
       movieData: null,
-      posterPath: null
+      posterPath: null,
+      moviePath: null
     }
   },
 
@@ -70,6 +74,7 @@ export default {
       console.log(data);
       this.movieData = data.value;
       this.posterPath = this.movieData.contents.find(content => content.type === 0).path;
+      this.moviePath = this.movieData.contents.find(content => content.type === 2).path;
       this.movieData.premiereDate = new Date(this.movieData.premiereDate);
     } catch (error) {
       console.log(error);
@@ -88,19 +93,25 @@ body {
 }
 
 .container {
-  padding-top: 2%;
   height: 100%;
-  width: 90%;
-  display: table;
+  width: 99%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
   margin: 0 auto;
   color: #dacfcf;
   padding-bottom: 1%;
+  max-width: 1280px;
+}
+
+.header{
+  margin-bottom: 1%;
 }
 
 .content {
   padding: 0;
-  width: 100%;
-  height: 60%;
+  width: 90%;
+  height: 40%;
   display: flex;
   justify-content: space-between;
   margin-bottom: 2%;
@@ -109,13 +120,12 @@ body {
 .movie-poster {
   height: 80%;
   width: 30%;
-  margin-left: 5%;
-  margin-top: 5%;
+  margin: auto auto;
 }
 
 .image {
   width: 100%;
-  max-width: 100%;
+  max-width: 80%;
   height: auto;
   border-radius: 30px;
 }
@@ -124,14 +134,18 @@ body {
   height: 80%;
   width: 60%;
   margin-top: 3%;
+  display: flex;
+  flex-direction: column;
+  align-content: space-between;
 }
 
 .title {
   height: 15%;
   width: 90%;
   color: white;
-  margin: 1% auto;
-  font-size: 7vh
+  margin: 0 auto;
+  margin-bottom: 3%;
+  font-size: 4vw
 }
 
 .description{
@@ -166,9 +180,16 @@ body {
   font-size: 2vh;
 }
 
+.not-movie{
+  width: 100%;
+  height: auto;
+  font-size: 5vh;
+  text-align: center;
+}
+
 .player-movie{
-  width: 80%;
-  height: 40%;
+  width: 60%;
+  height: 30%;
   margin: 0 auto;
 }
 

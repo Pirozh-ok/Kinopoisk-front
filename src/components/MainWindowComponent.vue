@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="movies != null || userData != null">
-    <Header/>
+    <Header class="header"/>
     <div class="content" v-if="movies != null">
       <ul class="dashboard-movies">
         <li v-for="movie in movies" :key="movie.id" class="movie">

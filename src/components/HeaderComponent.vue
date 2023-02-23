@@ -49,29 +49,55 @@ export default {
 }
 
 .header-text {
+  position: relative;
+  top: 0;
+  left: 0;
   padding-top: 1%;
-  width: 30%;
   color: #dacfcf;
-  font-size: 5vw;
+  font-size: 70px;
   display: block;
   font-family: 'Roboto', sans-serif;
+  width: 30%;
   margin: auto 0;
 }
+@media (max-width:1280px){
+  .header-text{
+    font-size: 60px;
+  }
+}
+@media (max-width:1200px){
+  .header-text{
+    font-size: 50px;
+  }
+}
+@media (max-width:700px){
+  .header-text{
+    font-size: 40px;
+  }
+}
+@media (max-width:450px){
+  .header-text{
+    font-size: 30px;
+  }
+}
+
 
 .header-userdata {
-  width: 25%;
-  height: 100%;
+  width: 30%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin: auto 0;
+  position: relative;
+  right: 0;
+  top: 0;
 }
 
 .header-userdata-text {
   margin: auto 0;
   width: 70%;
   display: block;
-  font-size: 1vw;
 }
+
 
 .header-userdata-btn {
   width: 20%;
