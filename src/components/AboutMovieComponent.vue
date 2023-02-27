@@ -101,7 +101,7 @@ body {
   margin: 0 auto;
   color: #dacfcf;
   padding-bottom: 1%;
-  max-width: 1280px;
+  max-width: 1600px;
 }
 
 .header{
@@ -124,10 +124,12 @@ body {
 }
 
 .image {
-  width: 100%;
+  width: 80%;
   max-width: 80%;
   height: auto;
-  border-radius: 30px;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  box-shadow:0 0 20px #555;
 }
 
 .movie-info {
@@ -145,11 +147,11 @@ body {
   color: white;
   margin: 0 auto;
   margin-bottom: 3%;
-  font-size: 4vw
+  font-size: calc( (100vw - 30rem)/30 + 1rem);
 }
 
 .description{
-  font-size: 2vh;
+  font-size: calc( (100vw - 50rem)/90 + 1rem);
   margin-bottom: 3%;
 }
 
@@ -162,13 +164,13 @@ body {
 }
 
 .about-movie-header{
-  font-size: 3vh;
+  font-size: calc( (100vw - 50rem)/90 + 1rem);
   margin-bottom: 3%;
 }
 
 .about-movie-main-info{
   width: 60%;
-  font-size: 2vh;
+  font-size: calc( (100vw - 30rem)/70);
 }
 
 .about-movie-main-info p{
@@ -177,13 +179,13 @@ body {
 
 .about-movie-actors{
   width: 30%;
-  font-size: 2vh;
+  font-size: calc( (100vw - 30rem)/70);
 }
 
 .not-movie{
   width: 100%;
   height: auto;
-  font-size: 5vh;
+  font-size: calc( (100vw - 30rem)/30 + 1rem);
   text-align: center;
 }
 

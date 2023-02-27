@@ -3,14 +3,15 @@
     <div class="header-text">
       <p>KinoPoisk</p>
     </div>
+    <div class="header-search-block">
+      <input type="text" placeholder="&#128269 Search movie">
+    </div>
     <div class="header-userdata">
       <div class="header-userdata-text">
         <p>{{ userName }}</p>
         <p>{{ email }}</p>
       </div>
-      <div class="header-userdata-btn">
-        <button class="header-userdata-btn-color" @click="handleClickUserInfo"/>
-      </div>
+        <button class="header-userdata-btn" @click="handleClickUserInfo"/>
     </div>
   </div>
 </template>
@@ -24,12 +25,16 @@ export default {
       text: "KinoPoisk",
       userName: localStorage.getItem("userName"),
       email: localStorage.getItem("email"),
+      isPressed: false
     }
   },
 
   methods: {
     handleClickUserInfo() {
-      alert("userInfo");
+      this.isPressed = !this.isPressed;
+    },
+    handleClickSeacrhMovie(){
+      alert("go seacrh film")
     }
   }
 }
@@ -39,8 +44,10 @@ export default {
 
 .header {
   background: #000000;
-  height: 10%;
-  width: 96%;
+  /*height: calc(1vh * 10%);*/
+  height: calc(10vh);
+  width: 100%;
+  max-width: 1600px;
   display: flex;
   justify-content: space-between;
   color: #dacfcf;
@@ -52,40 +59,48 @@ export default {
   position: relative;
   top: 0;
   left: 0;
-  padding-top: 1%;
   color: #dacfcf;
-  font-size: 70px;
   display: block;
   font-family: 'Roboto', sans-serif;
   width: 30%;
   margin: auto 0;
-}
-@media (max-width:1280px){
-  .header-text{
-    font-size: 60px;
-  }
-}
-@media (max-width:1200px){
-  .header-text{
-    font-size: 50px;
-  }
-}
-@media (max-width:700px){
-  .header-text{
-    font-size: 40px;
-  }
-}
-@media (max-width:450px){
-  .header-text{
-    font-size: 30px;
-  }
+  font-size: calc( (100vw - 40rem)/20 + 1rem);
 }
 
+.header-search-block{
+  width: 30%;
+  height: 60%;
+  display: flex;
+  justify-content: space-around;
+  margin: auto 0;
+  /*border-radius: 20px;*/
+  /*border-color: #ffffff;*/
+  /*border-style: groove;*/
+}
+
+.header-search-block input{
+  width: 90%;
+  height: 80%;
+  margin: auto 0;
+  background-color: black;
+  color: #dacfcf;
+  border-radius: 20px;
+  border: groove #dacfcf;
+  outline: none;
+  font-size: 2vh;
+  padding-left: 15px;
+}
+
+.header-search-block input:focus
+{
+  outline: none;
+}
 
 .header-userdata {
   width: 30%;
+  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin: auto 0;
   position: relative;
   right: 0;
@@ -94,22 +109,21 @@ export default {
 
 .header-userdata-text {
   margin: auto 0;
-  width: 70%;
+  width: 50%;
   display: block;
+  font-size: 100%;
 }
 
-
-.header-userdata-btn {
-  width: 20%;
-  margin: auto 0;
-}
-
-.header-userdata-btn-color{
+.header-userdata-btn{
   height: 4vw;
   width: 4vw;
   background-image: url("../assets/images/user-profile.png");
   background-size: cover;
   border-radius: 4vh;
   cursor: pointer;
+  position: relative;
+  right: 0;
+  max-width: 100px;
+  margin: auto 0;
 }
 </style>

@@ -1,7 +1,8 @@
 <template>
   <div class="container" v-if="movies != null || userData != null">
-    <Header class="header"/>
+    <Header class="header" ref="header"/>
     <div class="content" v-if="movies != null">
+<!--      <p >Enter for hidden</p>-->
       <ul class="dashboard-movies">
         <li v-for="movie in movies" :key="movie.id" class="movie">
           <ViewMovieComponent
@@ -58,4 +59,7 @@ export default {
 
 <style>
 @import '../assets/css/mainpage.css';
+p{
+  color: white;
+}
 </style>

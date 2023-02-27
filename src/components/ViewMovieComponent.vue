@@ -2,9 +2,9 @@
   <div class="container">
     <router-link :to="aboutMovieUrl">
       <div class="image">
-        <img :src="imagePath" class="view-image">
+        <img :src="imagePath">
       </div>
-      </router-link>
+    </router-link>
   </div>
 </template>
 
@@ -12,13 +12,13 @@
 
 export default {
   name: "ViewMovieComponent",
-  props:{
+  props: {
     movieId: String,
     movieTitle: String,
     imagePath: String,
   },
 
-  data(){
+  data() {
     return {
       aboutMovieUrl: `/movie/${this.movieId}`
     }
@@ -27,12 +27,11 @@ export default {
 </script>
 
 <style scoped>
-.container{
+.container {
   background: none;
-}
-
-p{
-  color: white;
+  display: inline-block;
+  /*height: 100%;*/
+  /*width: 100%;*/
 }
 
 .image{
@@ -40,8 +39,7 @@ p{
   height: 100%;
   overflow:hidden;
 }
-
-.view-image{
+.image img{
   width: 100%;
   height: 100%;
   -moz-transition: all 1s ease-out;
@@ -49,8 +47,7 @@ p{
   -webkit-transition: all 1s ease-out;
   transition: all 1s ease-out;
 }
-
-.view-image:hover {
+.image img:hover {
   -webkit-transform: scale(1.2);
   -moz-transform: scale(1.2);
   -o-transform: scale(1.2);
