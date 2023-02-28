@@ -41,10 +41,10 @@ export default {
   async mounted() {
     if (await isAuthorize()) {
       //get list movies
-      const url = `https://localhost:7143/api/movie/dashboard`;
+      const url = `https://localhost:7143/api/movie/search?orderBy=premiereDate&take=20`;
       try{
         const {data} = await axios.get(url);
-        this.movies = data.value;
+        this.movies = data.value.items;
         console.log(this.movies)
       }
       catch (error){

@@ -105,7 +105,7 @@ body {
 }
 
 .header{
-  margin-bottom: 1%;
+
 }
 
 .content {
@@ -114,7 +114,7 @@ body {
   height: 40%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 2%;
+  margin: 11vh auto 2% auto;
 }
 
 .movie-poster {

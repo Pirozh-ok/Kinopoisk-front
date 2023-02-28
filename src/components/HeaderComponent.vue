@@ -4,19 +4,34 @@
       <p>KinoPoisk</p>
     </div>
     <div class="header-search-block">
-      <input type="text" placeholder="&#128269 Search movie">
+      <input type="text"
+             placeholder="&#128269 Search movie"
+             v-model="searchWord"
+             @input="setFlag"/>
     </div>
     <div class="header-userdata">
       <div class="header-userdata-text">
         <p>{{ userName }}</p>
         <p>{{ email }}</p>
       </div>
-        <button class="header-userdata-btn" @click="handleClickUserInfo"/>
+      <button class="header-userdata-btn" @click="handleClickUserInfo"/>
+    </div>
+    <div class="search-result" v-show="searchWord != null && searchWord != ''">
+      <ul class="foundMovies" v-if="!notFound">
+        <li v-for="movie in foundMovies" :key="movie.id" class="view-movie" @click="redirectToAboutMovie(movie.id)">
+            <img :src="movie.imagePath" alt="">
+            <p>{{ movie.title }}</p>
+        </li>
+      </ul>
+      <p v-else class="not-found">Not found</p>
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+import notFound from "@/components/NotFound.vue";
+
 export default {
   name: "Header",
 
@@ -25,16 +40,56 @@ export default {
       text: "KinoPoisk",
       userName: localStorage.getItem("userName"),
       email: localStorage.getItem("email"),
+      searchWord: "",
+      foundMovies: null,
+      timer: null,
+      notFound: false,
       isPressed: false
     }
   },
 
   methods: {
     handleClickUserInfo() {
-      this.isPressed = !this.isPressed;
+      // this.isPressed = !this.isPressed;
+      alert(this.searchWord);
     },
-    handleClickSeacrhMovie(){
-      alert("go seacrh film")
+
+    async setFlag() {
+      this.foundMovies = null;
+
+      if (this.searchWord === "") {
+        return;
+      }
+
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+
+      this.timer = setTimeout(await this.timeOut, 500)
+    },
+
+    async timeOut() {
+      await this.searchMovieForString()
+      this.timer = null;
+    },
+
+    async searchMovieForString() {
+      const url = `https://localhost:7143/api/movie/search?searchText=${this.searchWord}&take=10&orderBy=premiereDate&descOrder=true`
+      //get list movies
+      try {
+        const {data} = await axios.get(url);
+        this.foundMovies = data.value.items;
+        this.notFound = !this.foundMovies.length > 0;
+        console.log((this.notFound))
+        console.log(this.foundMovies)
+      } catch (error) {
+        this.notFound = true;
+        console.log(error)
+      }
+    },
+
+    redirectToAboutMovie(key){
+      this.$router.push({name: "about-movie-page", params: {id:key}});
     }
   }
 }
@@ -63,22 +118,20 @@ export default {
   display: block;
   font-family: 'Roboto', sans-serif;
   width: 30%;
-  margin: auto 0;
-  font-size: calc( (100vw - 40rem)/20 + 1rem);
+  margin: auto 0 auto 2%;
+  font-size: calc((100vw - 40rem) / 20 + 1rem);
 }
 
-.header-search-block{
+.header-search-block {
   width: 30%;
   height: 60%;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   margin: auto 0;
-  /*border-radius: 20px;*/
-  /*border-color: #ffffff;*/
-  /*border-style: groove;*/
 }
 
-.header-search-block input{
+.header-search-block input {
   width: 90%;
   height: 80%;
   margin: auto 0;
@@ -91,9 +144,65 @@ export default {
   padding-left: 15px;
 }
 
-.header-search-block input:focus
-{
+.header-search-block input:focus {
   outline: none;
+}
+
+.search-result {
+  width: 30vw;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 9vh;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow-x: hidden;
+}
+
+.search-result::-webkit-scrollbar {
+  width: 0;
+}
+
+.not-found{
+  color: #dacfcf;
+  font-size: 50px;
+}
+
+.foundMovies {
+  display: flex;
+  flex-direction: column;
+  width: 95%;
+  height: 95%;
+  margin: auto auto;
+}
+
+.view-movie {
+  display: inline-flex;
+  flex-direction: row;
+  width: 90%;
+  margin: 1% auto;
+  /*position: relative;*/
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+.view-movie img {
+  width: 6vh;
+  height: 8vh;
+  margin-right: 1vw;
+}
+
+.view-movie p {
+  width: 70%;
+  color: black;
+  margin: auto auto;
+  font-size: calc((100vw - 80rem) / 40 + 1rem);;
 }
 
 .header-userdata {
@@ -114,7 +223,7 @@ export default {
   font-size: 100%;
 }
 
-.header-userdata-btn{
+.header-userdata-btn {
   height: 4vw;
   width: 4vw;
   background-image: url("../assets/images/user-profile.png");
