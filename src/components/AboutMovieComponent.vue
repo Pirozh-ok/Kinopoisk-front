@@ -46,22 +46,37 @@
         <source :src=moviePath type="video/mp4">
       </video>
     </div>
+    <div class="ratings">
+      <p>Movie ratings</p>
+      <ul class="comments">
+        <li v-for="comment in words" :key="words.length">
+          <view-comment
+            :username=comment
+            comment="hdhjkhakjfhjhjhakfa"
+            :rating="5"
+          />
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import Header from "./HeaderComponent.vue";
+import ViewComment from "@/components/ViewCommentComponent.vue";
+// import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: "AboutMovieComponent",
-  components: {Header},
+  components: {Header, ViewComment},
 
   data() {
     return {
       movieData: null,
       posterPath: null,
-      moviePath: null
+      moviePath: null,
+      words: ["one", "two", "three", "four", "five"]
     }
   },
 
@@ -89,7 +104,7 @@ export default {
 
 <style scoped>
 body {
-  background: url("../assets/images/background-gif2.gif");
+  background-color: #111114;
 }
 
 .container {
@@ -102,6 +117,7 @@ body {
   color: #dacfcf;
   padding-bottom: 1%;
   max-width: 1600px;
+  background-color: #111114;
 }
 
 .header{
@@ -114,7 +130,7 @@ body {
   height: 40%;
   display: flex;
   justify-content: space-between;
-  margin: 11vh auto 2% auto;
+  margin: 5vh auto 2% auto;
 }
 
 .movie-poster {
@@ -135,7 +151,6 @@ body {
 .movie-info {
   height: 80%;
   width: 60%;
-  margin-top: 3%;
   display: flex;
   flex-direction: column;
   align-content: space-between;
@@ -192,12 +207,34 @@ body {
 .player-movie{
   width: 60%;
   height: 30%;
-  margin: 0 auto;
+  margin: 0 auto 2% auto;
 }
 
 .video{
   height: auto;
   width: 100%;
   max-width: 100%;
+}
+
+.ratings{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  background-color: #dedcdc;
+  border-radius: 10px;
+  list-style-type: none;
+  margin: 0 auto;
+}
+
+.comments{
+  list-style: none;
+}
+
+.ratings p{
+  width: 30%;
+  text-align: center;
+  color: black;
+  font-size: calc( (100vw - 30rem)/30 + 1rem);
+  margin-bottom: 10px;
 }
 </style>

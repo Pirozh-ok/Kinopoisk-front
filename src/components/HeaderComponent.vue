@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div class="header-text">
+    <div class="header-text" @click="redirectToMainPage">
       <p>KinoPoisk</p>
     </div>
     <div class="header-search-block">
@@ -16,14 +16,14 @@
       </div>
       <button class="header-userdata-btn" @click="handleClickUserInfo"/>
     </div>
-    <div class="search-result" v-show="searchWord != null && searchWord != ''">
+    <div id="search" class="search-result" v-show="searchWord != null && searchWord != ''">
       <ul class="foundMovies" v-if="!notFound">
         <li v-for="movie in foundMovies" :key="movie.id" class="view-movie" @click="redirectToAboutMovie(movie.id)">
             <img :src="movie.imagePath" alt="">
             <p>{{ movie.title }}</p>
         </li>
       </ul>
-      <p v-else class="not-found">Not found</p>
+      <p v-else class="not-found">No movies found for your search</p>
     </div>
   </div>
 </template>
@@ -49,6 +49,10 @@ export default {
   },
 
   methods: {
+    handleClickOutsideSearchBlock(){
+      console.log('work!')
+    },
+
     handleClickUserInfo() {
       // this.isPressed = !this.isPressed;
       alert(this.searchWord);
@@ -89,7 +93,13 @@ export default {
     },
 
     redirectToAboutMovie(key){
+      console.log("aa")
       this.$router.push({name: "about-movie-page", params: {id:key}});
+      setTimeout(()=> {location.reload()}, 500);
+    },
+
+    redirectToMainPage(){
+      this.$router.push({name: "main-page"});
     }
   }
 }
@@ -120,6 +130,7 @@ export default {
   width: 30%;
   margin: auto 0 auto 2%;
   font-size: calc((100vw - 40rem) / 20 + 1rem);
+  cursor: pointer;
 }
 
 .header-search-block {
@@ -169,8 +180,10 @@ export default {
 }
 
 .not-found{
-  color: #dacfcf;
-  font-size: 50px;
+  color: #000000;
+  font-size: calc((100vw - 70rem) / 30 + 1rem);
+  font-weight: 20px;
+  text-align: center;
 }
 
 .foundMovies {

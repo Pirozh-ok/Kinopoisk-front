@@ -2,7 +2,6 @@
   <div class="container" v-if="movies != null || userData != null">
     <Header class="header" ref="header"/>
     <div class="content" v-if="movies != null">
-<!--      <p >Enter for hidden</p>-->
       <ul class="dashboard-movies">
         <li v-for="movie in movies" :key="movie.id" class="movie">
           <ViewMovieComponent
@@ -57,9 +56,64 @@ export default {
 }
 </script>
 
-<style>
-@import '../assets/css/mainpage.css';
-p{
-  color: white;
+<style scoped>
+/*body{*/
+/*  overflow-x: hidden;*/
+/*  !*background-image: url("../images/background-gif2.gif");*!*/
+/*  background: #111114;*/
+/*  background-repeat: no-repeat;*/
+/*  background-size: cover;*/
+/*}*/
+
+* {
+  /*outline: 1px solid red;*/
+}
+
+.container{
+  background: #111114;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1600px;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.header{
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  margin-bottom: 5%;
+}
+
+.content{
+  height: 90%;
+  width: 90%;
+  display: flex;
+  margin: 9vh auto;
+}
+
+.movie{
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 250px;
+  max-height: 350px;
+  min-height: 140px;
+  min-width: 100px;
+  margin: 2%;
+  border-radius: 5px;
+  border: 1px solid #fff;
+  box-shadow:0 0 20px #555;
+}
+
+.dashboard-movies{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  list-style-type: none;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 </style>

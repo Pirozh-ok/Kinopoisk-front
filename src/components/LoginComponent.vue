@@ -79,10 +79,6 @@
   </div>
 </template>
 
-<style scoped>
-@import '../assets/css/login.css';
-</style>
-
 <script>
 import axios from "axios";
 import {useVuelidate} from '@vuelidate/core'
@@ -210,3 +206,132 @@ export default {
 }
 </script>
 
+<style scoped>
+*{
+  box-sizing: border-box;
+}
+
+.container{
+  margin: auto;
+  max-width: 1280px;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  background: none;
+}
+
+html{
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #111114;
+  /*background: url("../assets/images/background_auth.jpeg");*/
+  /*background-repeat: no-repeat;*/
+  /*background-size: cover;*/
+  width: 100%;
+  height: 100%;
+}
+
+.form_auth_block{
+  display: block;
+  width: 35%;
+  min-width: 250px;
+  height: 60%;
+  min-height: 400px;
+  background: white;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+  border-radius: 30px;
+}
+
+.form_auth_block_head_text{
+  color: black;
+  text-align: center;
+  font-size: 400%;
+  font-weight: 600;
+  height: 20%;
+  margin-top: 2%;
+}
+
+.form_auth_login-buttons{
+  display: flex;
+  margin: 10% auto;
+  width: 80%;
+}
+
+.form_auth_user-elements{
+  text-aighn: center;
+  height: 80%;
+}
+
+.form_auth_block input{
+  width: 70%;
+  height: 45px;
+  border-radius: 10px;
+  border-color: black;
+  display: block;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 5%;
+}
+
+input:focus {
+  color: #000000;
+  border-radius: 10px;
+  border: 2px solid #436fea;
+}
+
+.form_auth_button {
+  color: white;
+  background: darkslategray;
+  display: block;
+  width: 30%;
+  border-radius: 10px;
+  height: 35px;
+  border-color: black;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 0 auto;
+}
+
+.form_auth_button_google{
+  width: 50%;
+  margin: 0 auto;
+}
+
+.form_auth_buttons_additional_buttons{
+  display: block;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.form_auth_additional_button {
+  width: 50%;
+  border: none;
+  text-decoration: underline;
+  font-size: 15px;
+}
+
+.error-message{
+  margin-left: 15%;
+  color: red;
+  text-align: center;
+  font-size: 20px
+}
+
+.invalid{
+  color: red;
+}
+::-webkit-input-placeholder {color:#3f3f44; padding-left: 20px;}
+:-moz-placeholder{color:#3f3f44; padding-left: 20px;}
+:-moz-placeholder{color:#3f3f44; padding-left: 20px;}
+:-ms-input-placeholder      {color:#3f3f44; padding-left: 20px;}
+</style>

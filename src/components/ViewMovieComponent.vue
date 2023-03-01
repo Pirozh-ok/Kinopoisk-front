@@ -28,7 +28,6 @@ export default {
 
 <style scoped>
 .container {
-  background: none;
   display: inline-block;
   /*height: 100%;*/
   /*width: 100%;*/
