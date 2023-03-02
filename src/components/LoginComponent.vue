@@ -117,10 +117,6 @@ export default {
   },
 
   methods: {
-    async hi(){
-      alert("hi")
-    },
-
     async handleClickLogIn() {
       console.log(this.v$.$invalid);
       if (this.v$.$invalid) {
@@ -217,6 +213,7 @@ export default {
   width: 100%;
   height: 100%;
   align-content: center;
+  justify-content: center;
   display: flex;
   flex-direction: column;
   background: none;
@@ -240,24 +237,24 @@ body {
 
 .form_auth_block{
   display: block;
-  width: 35%;
+  width: 40%;
   min-width: 250px;
   height: 60%;
-  min-height: 400px;
+  min-height: 500px;
   background: white;
   justify-content: center;
   align-content: center;
-  margin: auto;
+  margin: 20vh auto 0px auto;
   border-radius: 30px;
 }
 
 .form_auth_block_head_text{
   color: black;
   text-align: center;
-  font-size: 400%;
+  font-size: 4vw;
   font-weight: 600;
   height: 20%;
-  margin-top: 2%;
+  margin: 20px auto 20px auto;
 }
 
 .form_auth_login-buttons{

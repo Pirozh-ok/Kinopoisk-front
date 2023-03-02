@@ -27,10 +27,15 @@ export default {
 </script>
 
 <style scoped>
+a{
+  height: 100%;
+}
+
 .container {
-  display: inline-block;
+  display: inline-flex;
   /*height: 100%;*/
   /*width: 100%;*/
+  overflow: hidden;
 }
 
 .image{

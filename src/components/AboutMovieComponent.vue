@@ -29,6 +29,7 @@
           </div>
           <div class="about-movie-actors">
             <p class="about-movie-header">Starring:</p>
+<!--            v-for="actor in movie.actors"-->
             <p>Chris evans</p>
             <p>Chris evasssssss</p>
             <p>Chris evans</p>
@@ -47,13 +48,49 @@
       </video>
     </div>
     <div class="ratings">
-      <p>Movie ratings</p>
+      <p class="head-text-ratings">Movie ratings</p>
       <ul class="comments">
-        <li v-for="comment in words" :key="words.length">
+        <li class="user-comment-show" v-if="userRating != null">
           <view-comment
-            :username=comment
-            comment="hdhjkhakjfhjhjhakfa"
-            :rating="5"
+            :username="localStorage.getItem('username')"
+            :rating="userRating.movieRating"
+            :comment="userRating.comment"
+          />
+        </li>
+        <div class="user-comment-entry" v-else>
+          <p class="user-comment-entry-message">
+            You haven't rated the movie yet. You can leave a comment right now!
+          </p>
+          <div class="comment-action-users">
+            <input
+                type="number"
+                value="5"
+                max="5"
+                min="1"
+                title="Enter you rating for movie"
+                step="1"
+                required
+                class="input-rating"
+            >
+            <input
+                type="text"
+                placeholder="Enter you comment..."
+                class="input-text-comment"
+            >
+            <button
+            @click="handleClickCommentButton">
+              Сomment
+            </button>
+          </div>
+        </div>
+        <div class="comments-head-text">
+          <p>Comments from other KinoPoisk users:</p>
+        </div>
+        <li v-for="comment in ratings">
+          <view-comment
+            username="name"
+            :comment= comment.comment
+            :rating=comment.movieRating
           />
         </li>
       </ul>
@@ -65,38 +102,68 @@
 import axios from "axios";
 import Header from "./HeaderComponent.vue";
 import ViewComment from "@/components/ViewCommentComponent.vue";
+import {isAuthorize} from "@/auth.js";
+import ViewCommentComponent from "@/components/ViewCommentComponent.vue";
 // import { Carousel, Slide } from 'vue-carousel';
 
 export default {
   name: "AboutMovieComponent",
-  components: {Header, ViewComment},
+  components: {ViewCommentComponent, Header, ViewComment},
 
   data() {
     return {
       movieData: null,
       posterPath: null,
       moviePath: null,
-      words: ["one", "two", "three", "four", "five"]
+      ratings: null,
+      userRating: null,
+      skip: 0,
+      take: 2
     }
   },
 
   async mounted() {
-    const movieId = this.$route.params['id'];
-    const url = `https://localhost:7143/api/movie/${movieId}`;
+    if (await isAuthorize()) {
+      const movieId = this.$route.params['id'];
+      const url = `https://localhost:7143/api/movie/${movieId}`;
 
-    try {
-      const {data} = await axios.get(url);
-      console.log(data);
-      this.movieData = data.value;
-      this.posterPath = this.movieData.contents.find(content => content.type === 0).path;
-      this.moviePath = this.movieData.contents.find(content => content.type === 2).path;
-      this.movieData.premiereDate = new Date(this.movieData.premiereDate);
-    } catch (error) {
-      console.log(error);
+      try {
+        const {data} = await axios.get(url);
+        console.log(data);
+        this.movieData = data.value;
+        this.posterPath = this.movieData.contents.find(content => content.type === 0).path;
+        this.moviePath = this.movieData.contents.find(content => content.type === 2).path;
+        this.movieData.premiereDate = new Date(this.movieData.premiereDate);
 
-      if (error.status == 404) {
-        alert("not found");
+        try {
+          const config = {
+            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`}
+          };
+          const ratingsUrl = `https://localhost:7143/api/movie/${movieId}/ratings?skip=${this.skip}&take=${this.take}`
+          const {data} = await axios.get(ratingsUrl, config);
+          console.log(data);
+
+          this.userRating = data.value.userRating;
+          this.ratings = data.value.ratings;
+
+        } catch (error) {
+          console.log(error);
+        }
+      } catch (error) {
+        console.log(error);
+
+        if (error.status == 404) {
+          alert("not found");
+        }
       }
+    } else {
+      await this.$router.push({name: "login-page"})
+    }
+  },
+
+  methods:{
+    async handleClickCommentButton(){
+      alert("send")
     }
   }
 }
@@ -179,13 +246,13 @@ body {
 }
 
 .about-movie-header{
-  font-size: calc( (100vw - 50rem)/90 + 1rem);
+  font-size: calc( (100vw - 50rem)/25 + 1rem);
   margin-bottom: 3%;
 }
 
 .about-movie-main-info{
   width: 60%;
-  font-size: calc( (100vw - 30rem)/70);
+  font-size: calc( (100vw - 40rem)/40);
 }
 
 .about-movie-main-info p{
@@ -194,7 +261,7 @@ body {
 
 .about-movie-actors{
   width: 30%;
-  font-size: calc( (100vw - 30rem)/70);
+  font-size: calc( (100vw - 40rem)/40);
 }
 
 .not-movie{
@@ -226,15 +293,63 @@ body {
   margin: 0 auto;
 }
 
-.comments{
-  list-style: none;
-}
-
-.ratings p{
+.head-text-ratings{
   width: 30%;
   text-align: center;
   color: black;
   font-size: calc( (100vw - 30rem)/30 + 1rem);
   margin-bottom: 10px;
 }
+
+.comments{
+  list-style: none;
+}
+
+.user-comment-entry{
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto 2% auto;
+}
+
+.user-comment-entry-message{
+  font-size: 20px;
+  color: black;
+  width: 80%;
+  margin: 0 auto 2% auto;
+}
+
+.comment-action-users{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.input-rating{
+  width: 5%;
+  height: auto;
+  font-size: 20px;
+  text-align: center;
+}
+
+.input-text-comment{
+  font-size: 20px;
+  height: 50px;
+  width: 70%;
+  padding-left: 10px;
+}
+
+.comment-action-users button{
+  width: 20%;
+  height: 30px;
+  margin: auto 0;
+}
+
+.comments-head-text{
+  font-size: 20px;
+  color: black;
+  width: 60%;
+  margin: 0 auto 1% auto;
+}
+
 </style>

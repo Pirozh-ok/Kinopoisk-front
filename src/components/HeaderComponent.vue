@@ -31,6 +31,7 @@
 <script>
 import axios from "axios";
 import notFound from "@/components/NotFound.vue";
+import LoginComponent from "@/components/LoginComponent.vue";
 
 export default {
   name: "Header",
@@ -53,9 +54,8 @@ export default {
       console.log('work!')
     },
 
-    handleClickUserInfo() {
-      // this.isPressed = !this.isPressed;
-      alert(this.searchWord);
+    async handleClickUserInfo() {
+      await this.LogOut();
     },
 
     async setFlag() {
@@ -100,6 +100,12 @@ export default {
 
     redirectToMainPage(){
       this.$router.push({name: "main-page"});
+    },
+
+    async LogOut() {
+      console.log("logout");
+      localStorage.clear();
+      await this.$router.push('/login');
     }
   }
 }
@@ -233,7 +239,7 @@ export default {
   margin: auto 0;
   width: 50%;
   display: block;
-  font-size: 100%;
+  font-size: calc((100vw - 50rem) / 50);
 }
 
 .header-userdata-btn {

@@ -30,11 +30,7 @@ export default {
     }
   },
   methods: {
-    async LogOut() {
-      console.log("logout");
-      localStorage.clear();
-      await this.$router.push('/login');
-    }
+
   },
 
   async mounted() {
@@ -57,20 +53,8 @@ export default {
 </script>
 
 <style scoped>
-/*body{*/
-/*  overflow-x: hidden;*/
-/*  !*background-image: url("../images/background-gif2.gif");*!*/
-/*  background: #111114;*/
-/*  background-repeat: no-repeat;*/
-/*  background-size: cover;*/
-/*}*/
-
-* {
-  /*outline: 1px solid red;*/
-}
 
 .container{
-  background: #111114;
   margin: 0 auto;
   width: 100%;
   max-width: 1600px;
@@ -106,6 +90,11 @@ export default {
   border-radius: 5px;
   border: 1px solid #fff;
   box-shadow:0 0 20px #555;
+}
+
+.movie ViewMovieComponent{
+  height: 100%;
+  width: 100%;
 }
 
 .dashboard-movies{
