@@ -29,7 +29,7 @@
           </div>
           <div class="about-movie-actors">
             <p class="about-movie-header">Starring:</p>
-<!--            v-for="actor in movie.actors"-->
+            <!--            v-for="actor in movie.actors"-->
             <p>Chris evans</p>
             <p>Chris evasssssss</p>
             <p>Chris evans</p>
@@ -50,11 +50,11 @@
     <div class="ratings">
       <p class="head-text-ratings">Movie ratings</p>
       <ul class="comments">
-        <li class="user-comment-show" v-if="userRating != null">
+        <li class="user-comment-show" v-if="isCommentedByUser">
           <view-comment
-            :username="localStorage.getItem('username')"
-            :rating="userRating.movieRating"
-            :comment="userRating.comment"
+              :username="userName + ' (you)'"
+              :rating="userRating"
+              :comment="userComment"
           />
         </li>
         <div class="user-comment-entry" v-else>
@@ -63,36 +63,44 @@
           </p>
           <div class="comment-action-users">
             <input
-                type="number"
+                id="userRating"
                 value="5"
+                type="number"
                 max="5"
                 min="1"
                 title="Enter you rating for movie"
                 step="1"
                 required
                 class="input-rating"
+                onkeyup="if(this.value>5){this.value=5;} else if(this.value < 1) {this.value=1;}"
             >
+
             <input
                 type="text"
                 placeholder="Enter you comment..."
                 class="input-text-comment"
+                v-model="userComment"
             >
+
             <button
-            @click="handleClickCommentButton">
-              Сomment
+                type="button"
+                @click="handleClickCommentButton">
+              Comment
             </button>
           </div>
         </div>
-        <div class="comments-head-text">
-          <p>Comments from other KinoPoisk users:</p>
+        <div v-show="!notRatings">
+          <div class="comments-head-text">
+            <p>Comments from other KinoPoisk users:</p>
+          </div>
+          <li v-for="comment in ratings">
+            <view-comment
+                username="name"
+                :comment=comment.comment
+                :rating=comment.movieRating
+            />
+          </li>
         </div>
-        <li v-for="comment in ratings">
-          <view-comment
-            username="name"
-            :comment= comment.comment
-            :rating=comment.movieRating
-          />
-        </li>
       </ul>
     </div>
   </div>
@@ -110,13 +118,22 @@ export default {
   name: "AboutMovieComponent",
   components: {ViewCommentComponent, Header, ViewComment},
 
+  computed: {
+    notRatings(){
+      return this.ratings == null || this.ratings.length < 1
+    }
+  },
+
   data() {
     return {
       movieData: null,
       posterPath: null,
       moviePath: null,
       ratings: null,
+      isCommentedByUser: false,
       userRating: null,
+      userComment: "",
+      userName: localStorage.getItem("userName"),
       skip: 0,
       take: 2
     }
@@ -143,7 +160,11 @@ export default {
           const {data} = await axios.get(ratingsUrl, config);
           console.log(data);
 
-          this.userRating = data.value.userRating;
+          if(data.value.userRating != null){
+            this.isCommentedByUser = true;
+            this.userRating = data.value.userRating.movieRating;
+            this.userComment = data.value.userRating.comment;
+          }
           this.ratings = data.value.ratings;
 
         } catch (error) {
@@ -161,9 +182,32 @@ export default {
     }
   },
 
-  methods:{
-    async handleClickCommentButton(){
-      alert("send")
+  methods: {
+    async handleClickCommentButton() {
+      if (this.userComment && this.userComment.length > 0 && this.userComment.length < 200) {
+        try {
+          const url = "https://localhost:7143/api/movie/rate-movie";
+          const config = {
+            headers: {Authorization: `Bearer ${localStorage.getItem("accessToken")}`},
+          };
+
+          const body = {
+            userId: localStorage.getItem("userId"),
+            movieId: this.movieData.id,
+            comment: this.userComment,
+            movieRating: document.getElementById("userRating").value
+          }
+          console.log(body)
+          const {data} = await axios.post(url, body, config);
+          console.log(data);
+          this.userName = localStorage.getItem('userName');
+          this.userRating = body.movieRating
+          this.isCommentedByUser = true;
+        } catch (error) {
+          console.log(error);
+          alert("Couldn't comment on the movie, try again later");
+        }
+      }
     }
   }
 }
@@ -187,7 +231,7 @@ body {
   background-color: #111114;
 }
 
-.header{
+.header {
 
 }
 
@@ -212,7 +256,7 @@ body {
   height: auto;
   border-radius: 5px;
   border: 1px solid #fff;
-  box-shadow:0 0 20px #555;
+  box-shadow: 0 0 20px #555;
 }
 
 .movie-info {
@@ -229,11 +273,11 @@ body {
   color: white;
   margin: 0 auto;
   margin-bottom: 3%;
-  font-size: calc( (100vw - 30rem)/30 + 1rem);
+  font-size: calc(2vw + 2vh);
 }
 
-.description{
-  font-size: calc( (100vw - 50rem)/90 + 1rem);
+.description {
+  font-size: calc(0.5vh + 1vw);
   margin-bottom: 3%;
 }
 
@@ -245,45 +289,45 @@ body {
   justify-content: space-around;
 }
 
-.about-movie-header{
-  font-size: calc( (100vw - 50rem)/25 + 1rem);
+.about-movie-header {
+  font-size: calc(1vh + 1.5vw);
   margin-bottom: 3%;
 }
 
-.about-movie-main-info{
+.about-movie-main-info {
   width: 60%;
-  font-size: calc( (100vw - 40rem)/40);
+  font-size: calc(0.5vh + 1vw);;
 }
 
-.about-movie-main-info p{
+.about-movie-main-info p {
   margin-bottom: 1%;
 }
 
-.about-movie-actors{
+.about-movie-actors {
   width: 30%;
-  font-size: calc( (100vw - 40rem)/40);
+  font-size: calc(0.5vh + 1vw);
 }
 
-.not-movie{
+.not-movie {
   width: 100%;
   height: auto;
-  font-size: calc( (100vw - 30rem)/30 + 1rem);
+  font-size: calc(2vh + 2vw);
   text-align: center;
 }
 
-.player-movie{
+.player-movie {
   width: 60%;
   height: 30%;
   margin: 0 auto 2% auto;
 }
 
-.video{
+.video {
   height: auto;
   width: 100%;
   max-width: 100%;
 }
 
-.ratings{
+.ratings {
   display: flex;
   flex-direction: column;
   width: 90%;
@@ -293,59 +337,61 @@ body {
   margin: 0 auto;
 }
 
-.head-text-ratings{
-  width: 30%;
+.head-text-ratings {
+  width: 40%;
   text-align: center;
   color: black;
-  font-size: calc( (100vw - 30rem)/30 + 1rem);
+  font-weight: bold;
+  font-size: calc(1.5vh + 1.5vw);
   margin-bottom: 10px;
 }
 
-.comments{
+.comments {
   list-style: none;
 }
 
-.user-comment-entry{
+.user-comment-entry {
   width: 90%;
   display: flex;
   flex-direction: column;
   margin: 0 auto 2% auto;
 }
 
-.user-comment-entry-message{
+.user-comment-entry-message {
   font-size: 20px;
   color: black;
   width: 80%;
   margin: 0 auto 2% auto;
 }
 
-.comment-action-users{
+.comment-action-users {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.input-rating{
+.input-rating {
   width: 5%;
   height: auto;
   font-size: 20px;
   text-align: center;
 }
 
-.input-text-comment{
+.input-text-comment {
   font-size: 20px;
   height: 50px;
   width: 70%;
   padding-left: 10px;
 }
 
-.comment-action-users button{
+.comment-action-users button {
   width: 20%;
   height: 30px;
   margin: auto 0;
 }
 
-.comments-head-text{
+.comments-head-text {
+  font-weight: bolder;
   font-size: 20px;
   color: black;
   width: 60%;

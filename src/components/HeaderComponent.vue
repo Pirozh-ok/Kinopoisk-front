@@ -115,7 +115,6 @@ export default {
 
 .header {
   background: #000000;
-  /*height: calc(1vh * 10%);*/
   height: calc(10vh);
   width: 100%;
   max-width: 1600px;
@@ -205,7 +204,6 @@ export default {
   flex-direction: row;
   width: 90%;
   margin: 1% auto;
-  /*position: relative;*/
   border: none;
   background-color: white;
   cursor: pointer;
@@ -239,7 +237,8 @@ export default {
   margin: auto 0;
   width: 50%;
   display: block;
-  font-size: calc((100vw - 50rem) / 50);
+  /*font-size: calc((100vw - 50rem) / 50);*/
+  font-size: calc(0.8vh + 0.8vw);
 }
 
 .header-userdata-btn {
