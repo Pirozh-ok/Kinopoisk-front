@@ -20,12 +20,16 @@
                ${movieData.premiereDate.toLocaleString('default', {month: 'long'})}
                ${movieData.premiereDate.getFullYear()}`
               }} </p>
-            <p>Countries: {{ movieData.countries.map(x => x.name).join(', ') }}</p>
-            <p>Genres: {{ movieData.genres.map(x => x.name).join(', ').toLowerCase() }}</p>
-            <p>Budget: ${{ movieData.budgetInDollars.toLocaleString() }}</p>
-            <p>World fees: ${{ movieData.worldFeesInDollars.toLocaleString() }}</p>
-            <p>AgeCategory: {{ movieData.ageCategories.map(x => x.value).join(', ') }}</p>
-            <p>Time: {{ movieData.durationInMinutes }} minutes</p>
+            <p><span style="font-weight: bold">Countries:</span> {{ movieData.countries.map(x => x.name).join(', ') }}
+            </p>
+            <p><span style="font-weight: bold">Genres:</span>
+              {{ movieData.genres.map(x => x.name).join(', ').toLowerCase() }}</p>
+            <p><span style="font-weight: bold">Budget:</span> ${{ movieData.budgetInDollars.toLocaleString() }}</p>
+            <p><span style="font-weight: bold">World fees:</span> ${{ movieData.worldFeesInDollars.toLocaleString() }}
+            </p>
+            <p><span style="font-weight: bold">AgeCategory:</span>
+              {{ movieData.ageCategories.map(x => x.value).join(', ') }}</p>
+            <p><span style="font-weight: bold">Time:</span> {{ movieData.durationInMinutes }} minutes</p>
           </div>
           <div class="about-movie-actors">
             <p class="about-movie-header">Starring:</p>
@@ -62,18 +66,20 @@
             You haven't rated the movie yet. You can leave a comment right now!
           </p>
           <div class="comment-action-users">
-            <input
-                id="userRating"
-                value="5"
-                type="number"
-                max="5"
-                min="1"
-                title="Enter you rating for movie"
-                step="1"
-                required
-                class="input-rating"
-                onkeyup="if(this.value>5){this.value=5;} else if(this.value < 1) {this.value=1;}"
-            >
+            <div class="star-rating">
+              <div class="star-rating__wrap">
+                <input class="star-rating__input fa" id="star-rating-5" type="radio" name="rating" value="5"
+                       title="5 out of 5 stars" @change="handleClick5Stars">
+                <input class="star-rating__input fa" id="star-rating-4" type="radio" name="rating" value="4"
+                       title="4 out of 5 stars" @change="handleClick4Stars">
+                <input class="star-rating__input fa" id="star-rating-3" type="radio" name="rating" value="3"
+                       title="3 out of 5 stars" @change="handleClick3Stars">
+                <input class="star-rating__input fa" id="star-rating-2" type="radio" name="rating" value="2"
+                       title="2 out of 5 stars" @change="handleClick2Stars">
+                <input class="star-rating__input fa" id="star-rating-1" type="radio" name="rating" value="1"
+                       title="1 out of 5 stars" @change="handleClick1Stars">
+              </div>
+            </div>
 
             <input
                 type="text"
@@ -84,7 +90,8 @@
 
             <button
                 type="button"
-                @click="handleClickCommentButton">
+                @click="handleClickCommentButton"
+                class="comment-button">
               Comment
             </button>
           </div>
@@ -95,7 +102,7 @@
           </div>
           <li v-for="comment in ratings">
             <view-comment
-                username="name"
+                :username=comment.userName
                 :comment=comment.comment
                 :rating=comment.movieRating
             />
@@ -119,7 +126,7 @@ export default {
   components: {ViewCommentComponent, Header, ViewComment},
 
   computed: {
-    notRatings(){
+    notRatings() {
       return this.ratings == null || this.ratings.length < 1
     }
   },
@@ -160,7 +167,7 @@ export default {
           const {data} = await axios.get(ratingsUrl, config);
           console.log(data);
 
-          if(data.value.userRating != null){
+          if (data.value.userRating != null) {
             this.isCommentedByUser = true;
             this.userRating = data.value.userRating.movieRating;
             this.userComment = data.value.userRating.comment;
@@ -183,6 +190,23 @@ export default {
   },
 
   methods: {
+    handleClick5Stars() {
+      this.userRating = 5;
+    },
+    handleClick4Stars() {
+      this.userRating = 4;
+    },
+    handleClick3Stars() {
+      this.userRating = 3;
+    },
+    handleClick2Stars() {
+      this.userRating = 2;
+    },
+    handleClick1Stars() {
+      this.userRating = 1;
+    },
+
+
     async handleClickCommentButton() {
       if (this.userComment && this.userComment.length > 0 && this.userComment.length < 200) {
         try {
@@ -195,13 +219,19 @@ export default {
             userId: localStorage.getItem("userId"),
             movieId: this.movieData.id,
             comment: this.userComment,
-            movieRating: document.getElementById("userRating").value
+            movieRating: this.userRating
+            // movieRating: document.getElementById("userRating").value
           }
+
+          if (body.movieRating == null) {
+            alert("The rating for the film is obligatory");
+            return;
+          }
+
           console.log(body)
           const {data} = await axios.post(url, body, config);
           console.log(data);
           this.userName = localStorage.getItem('userName');
-          this.userRating = body.movieRating
           this.isCommentedByUser = true;
         } catch (error) {
           console.log(error);
@@ -265,6 +295,10 @@ body {
   display: flex;
   flex-direction: column;
   align-content: space-between;
+}
+
+.nameProperty {
+  font-weight: bold;
 }
 
 .title {
@@ -367,7 +401,6 @@ body {
 .comment-action-users {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
 
 .input-rating {
@@ -378,16 +411,22 @@ body {
 }
 
 .input-text-comment {
-  font-size: 20px;
-  height: 50px;
+  font-size: calc(1vh + 0.5vw);
+  height: 4vh;
   width: 70%;
   padding-left: 10px;
+  border-radius: 20px;
+  margin-right: 2%;
 }
 
 .comment-action-users button {
-  width: 20%;
-  height: 30px;
+  width: 10%;
+  height: 3vh;
   margin: auto 0;
+  font-size: calc(1vh + 0.5vw);
+  border-radius: 20px;
+  background-color: #111114;
+  color: #ffffff;
 }
 
 .comments-head-text {
@@ -398,4 +437,52 @@ body {
   margin: 0 auto 1% auto;
 }
 
+.star-rating {
+  height: 100%;
+  margin: auto 1% auto 0;
+}
+
+.star-rating__wrap {
+  display: inline-block;
+  font-size: 1rem;
+}
+
+.star-rating__wrap:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.star-rating__input {
+  float: right;
+  position: relative;
+  width: 0;
+  height: 0;
+  margin: 0 20px 20px 0;
+  cursor: pointer;
+}
+
+.star-rating__input:before {
+  content: "\f006";
+  color: #FFB300;
+  font-size: 20px;
+  width: 1 wh+1vw;
+  height: 1 wh+1vw;
+  line-height: 20px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.star-rating__input:hover:before,
+.star-rating__input:hover ~ .star-rating__input:before {
+  content: "\f005";
+  color: #e3ae2a;
+}
+
+.star-rating__input:checked:before,
+.star-rating__input:checked ~ .star-rating__input:before {
+  content: "\f005";
+  color: #FFB300 !important;
+}
 </style>

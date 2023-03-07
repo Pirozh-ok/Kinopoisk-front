@@ -7,25 +7,11 @@
       <div class="username-and-rating">
         <p class="userName">{{ username }}</p>
         <!--      <p>Rating:{{rating}}</p>-->
-        <div class="rating-star1" v-show="rating > 0"></div>
-        <div class="rating-star1" v-show="rating > 1"></div>
-        <div class="rating-star1" v-show="rating > 2"></div>
-        <div class="rating-star1" v-show="rating > 3"></div>
-        <div class="rating-star1" v-show="rating > 4"></div>
-<!--        <div class="star-rating">-->
-<!--          <div class="star-rating__wrap">-->
-<!--            <input class="star-rating__input fa" id="star-rating-5" type="radio" name="rating" value="5"-->
-<!--                   title="5 out of 5 stars">-->
-<!--            <input class="star-rating__input fa" id="star-rating-4" type="radio" name="rating" value="4"-->
-<!--                   title="4 out of 5 stars">-->
-<!--            <input class="star-rating__input fa" id="star-rating-3" type="radio" name="rating" value="3"-->
-<!--                   title="3 out of 5 stars">-->
-<!--            <input class="star-rating__input fa" id="star-rating-2" type="radio" name="rating" value="2"-->
-<!--                   title="2 out of 5 stars">-->
-<!--            <input class="star-rating__input fa" id="star-rating-1" type="radio" name="rating" value="1"-->
-<!--                   title="1 out of 5 stars">-->
-<!--          </div>-->
-<!--        </div>-->
+        <div class="rating-star" v-show="rating > 0"></div>
+        <div class="rating-star" v-show="rating > 1"></div>
+        <div class="rating-star" v-show="rating > 2"></div>
+        <div class="rating-star" v-show="rating > 3"></div>
+        <div class="rating-star" v-show="rating > 4"></div>
       </div>
       <p>{{ comment }}</p>
     </div>
@@ -115,55 +101,12 @@ export default {
   font-size: calc(0.5vh + 1vw)
 }
 
-.star-rating__wrap {
-  display: inline-block;
-  font-size: 1rem;
-}
-
-.star-rating__wrap:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.star-rating__input {
-  float: right;
-  position: relative;
-  width: 0;
-  height: 0;
-  margin: 0 20px 20px 0;
-  cursor: pointer;
-}
-
-.star-rating__input:before {
-  content: "\f006";
-  color: #FFB300;
-  font-size: 20px;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.star-rating__input:hover:before,
-.star-rating__input:hover ~ .star-rating__input:before {
-  content: "\f005";
-  color: #e3ae2a;
-}
-
-.star-rating__input:checked:before,
-.star-rating__input:checked ~ .star-rating__input:before {
-  content: "\f005";
-  color: #FFB300 !important;
-}
-
-.rating-star1 {
-  width: 15px;
-  height: 15px;
+.rating-star {
+  width: calc(0.5vh + 0.5vw);
+  height: calc(0.5vh + 0.5vw);
   background-image: url("../assets/images/rating-star.svg");
   background-size: cover;
+  margin-top: 0.5%
 }
 
 </style>
