@@ -59,6 +59,7 @@
               :username="userName + ' (you)'"
               :rating="userRating"
               :comment="userComment"
+              :updateDate="moment(new Date(userCommentUpdatedDate)).format('DD MMMM YYYY, HH:mm')"
           />
         </li>
         <div class="user-comment-entry" v-else>
@@ -105,6 +106,7 @@
                 :username=comment.userName
                 :comment=comment.comment
                 :rating=comment.movieRating
+                :updateDate="moment(new Date(comment.updateDate)).format('DD MMMM YYYY, HH:mm')"
             />
           </li>
         </div>
@@ -119,7 +121,7 @@ import Header from "./HeaderComponent.vue";
 import ViewComment from "@/components/ViewCommentComponent.vue";
 import {isAuthorize} from "@/auth.js";
 import ViewCommentComponent from "@/components/ViewCommentComponent.vue";
-// import { Carousel, Slide } from 'vue-carousel';
+import moment from "moment";
 
 export default {
   name: "AboutMovieComponent",
@@ -140,9 +142,13 @@ export default {
       isCommentedByUser: false,
       userRating: null,
       userComment: "",
+      userCommentUpdatedDate: null,
       userName: localStorage.getItem("userName"),
       skip: 0,
-      take: 2
+      take: 10,
+      moment: function (date) {
+        return moment(date);
+      }
     }
   },
 
@@ -171,6 +177,7 @@ export default {
             this.isCommentedByUser = true;
             this.userRating = data.value.userRating.movieRating;
             this.userComment = data.value.userRating.comment;
+            this.userCommentUpdatedDate = data.value.userRating.updateDate;
           }
           this.ratings = data.value.ratings;
 
@@ -190,6 +197,9 @@ export default {
   },
 
   methods: {
+    moment() {
+      return moment
+    },
     handleClick5Stars() {
       this.userRating = 5;
     },
@@ -220,7 +230,6 @@ export default {
             movieId: this.movieData.id,
             comment: this.userComment,
             movieRating: this.userRating
-            // movieRating: document.getElementById("userRating").value
           }
 
           if (body.movieRating == null) {
@@ -233,6 +242,7 @@ export default {
           console.log(data);
           this.userName = localStorage.getItem('userName');
           this.isCommentedByUser = true;
+          this.userCommentUpdatedDate = Date.now();
         } catch (error) {
           console.log(error);
           alert("Couldn't comment on the movie, try again later");

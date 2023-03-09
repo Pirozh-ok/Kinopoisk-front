@@ -6,12 +6,12 @@
     <div class="comment-text" :style="`background-color:${colorsBackComment.get(rating)}`">
       <div class="username-and-rating">
         <p class="userName">{{ username }}</p>
-        <!--      <p>Rating:{{rating}}</p>-->
         <div class="rating-star" v-show="rating > 0"></div>
         <div class="rating-star" v-show="rating > 1"></div>
         <div class="rating-star" v-show="rating > 2"></div>
         <div class="rating-star" v-show="rating > 3"></div>
         <div class="rating-star" v-show="rating > 4"></div>
+        <p class="updateDate"> {{updateDate}}</p>
       </div>
       <p>{{ comment }}</p>
     </div>
@@ -26,7 +26,8 @@ export default {
   props: {
     rating: Number,
     comment: String,
-    username: String
+    username: String,
+    updateDate: Date
   },
 
   data() {
@@ -89,6 +90,7 @@ export default {
 .username-and-rating {
   font-weight: bold;
   display: inline-flex;
+  margin-bottom: 10px;
 }
 
 .comment-text p {
@@ -96,9 +98,12 @@ export default {
 }
 
 .userName {
-  margin-right: 10px;
-  margin-bottom: 10px;
+  margin: auto 10px;
   font-size: calc(0.5vh + 1vw)
+}
+
+.updateDate{
+  margin: auto 0 auto 10px;
 }
 
 .rating-star {
